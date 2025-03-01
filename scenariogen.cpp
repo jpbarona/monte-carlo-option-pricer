@@ -5,7 +5,6 @@
 using std::mt19937;
 using std::normal_distribution;
 using namespace std;
-// #define RISK_FREE_RATE 1.2/100
 #define DEFAULT_SEED 69
 #define DT 252.0
 
@@ -60,7 +59,7 @@ class EquityPriceGenerator {
     }
     
     private:
-    double expArg1 = (rRate - (volatility * volatility / 2.0)) * dt;
+    const double expArg1 = (rRate - (volatility * volatility / 2.0)) * dt;
     double nextPrice(double current_price, double norm) {
 
         double expArg2 = volatility * sqrt(dt) * norm;
