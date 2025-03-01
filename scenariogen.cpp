@@ -60,8 +60,9 @@ class EquityPriceGenerator {
     }
     
     private:
+    double expArg1 = (rRate - (volatility * volatility / 2.0)) * dt;
     double nextPrice(double current_price, double norm) {
-        double expArg1 = (rRate - (volatility * volatility / 2.0)) * dt;
+
         double expArg2 = volatility * sqrt(dt) * norm;
         double newprice = current_price * exp(expArg1 + expArg2);
         return newprice;
