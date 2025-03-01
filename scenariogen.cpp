@@ -35,6 +35,28 @@ struct Equity : public Macro {
     Equity(double p, double v, const Macro &m) : Macro(m), price(p), volatility(v) {}
 };
 
+void save_as_csv(vector<vector<double>> scenarios, string filename) {
+    ofstream file(filename);
+    int num_scenarios = scenarios.size();
+    int num_days = scenarios[0].size();
+
+    for (int scenario = 0; scenario < num_scenarios; scenario++)
+    {
+    vector<double>& scenario_vector = scenarios[scenario];
+        for (int day = 0; day < num_days; day++)
+        {
+            file << scenario_vector[day];
+            if (day != num_days-1) {
+                file << ",";
+            }
+        }
+        file << "\n";        
+    }
+    file.close();
+    cout << "Prices saved to " + filename << endl;
+    
+}
+
 
 class EquityPriceGenerator {
     public:
