@@ -19,5 +19,9 @@ int main() {
     for (const double price : scenario_0) {
         cout << price << "\n";
     }
+    string filename = "scenarios.csv";
+    save_as_csv(scenarios, filename);
+
+    
     return 0;
 }
