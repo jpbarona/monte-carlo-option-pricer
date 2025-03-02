@@ -9,8 +9,8 @@ int main() {
     Equity AAPL(165, 0.05, USA);
 
     EquityPriceGenerator epg(AAPL, USA);
-    constexpr int num_steps = 500;
-    constexpr int num_scenarios = 1e5;
+    constexpr int num_steps = 300;
+    constexpr int num_scenarios = 5e4;
 
     ScenarioMatrix scenarios = epg.generateScenarios(num_steps, num_scenarios);
 

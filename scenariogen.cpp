@@ -6,9 +6,10 @@ using std::mt19937;
 using std::normal_distribution;
 using namespace std;
 #define DEFAULT_SEED 69
-#define DT 252.0
+#define DEFAULT_DT 252.0
+#define DEFAULT_RISK_FREE_RATE 1.2/100
 
-
+//Holds simulation data, metadata
 struct ScenarioMatrix{
     vector<double> scenarios;
     const int num_steps;
@@ -18,18 +19,23 @@ struct ScenarioMatrix{
     }
 };
 
+/*These macro objects act like configuration files for simulation parameters
+and macroeconomic factors like the risk free rate. Each equity must have a Macro
+to initialize.*/
+
 struct Macro {
     double riskfreerate;
     double dt;
     int seed;
-    Macro (double r, double dt=DT, int seed=DEFAULT_SEED) : riskfreerate(r), dt(dt), seed(seed) {}
+    Macro (double r=DEFAULT_RISK_FREE_RATE, double dt=DEFAULT_DT, int seed=DEFAULT_SEED) : riskfreerate(r), dt(dt), seed(seed) {}
 };
 
+//If no macro is given, assumes default values set in definitions.
 struct Equity : public Macro {
     double price;
     double volatility;
 
-    Equity(double p, double v, const Macro &m) : Macro(m), price(p), volatility(v) {}
+    Equity(double p, double v, const Macro &m = Macro()) : Macro(m), price(p), volatility(v) {}
 };
 
 void save_as_csv(ScenarioMatrix scenario_matrix, string filename) {
@@ -40,7 +46,6 @@ void save_as_csv(ScenarioMatrix scenario_matrix, string filename) {
 
     for (int scenario = 0; scenario < num_scenarios; scenario++)
     {
-        file << scenario << ",";
         for (int time = 0; time < num_steps; time++)
         {
             file << scenarios[scenario*num_steps + time];
@@ -79,6 +84,7 @@ class EquityPriceGenerator {
     }
     
     private:
+    //Wiener Process (no drift)
     const double expArg1 = (rRate - (volatility * volatility / 2.0)) * dt;
     double nextPrice(double current_price, double norm) {
         double expArg2 = volatility * sqrt(dt) * norm;
