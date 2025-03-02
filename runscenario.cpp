@@ -9,16 +9,11 @@ int main() {
     Equity AAPL(165, 0.05, USA);
 
     EquityPriceGenerator epg(AAPL, USA);
-    constexpr int num_steps = 300;
-    constexpr int num_scenarios = 10000;
+    constexpr int num_steps = 500;
+    constexpr int num_scenarios = 1e5;
 
-    vector<vector<double>> scenarios = epg.generateScenarios(num_steps, num_scenarios);
+    ScenarioMatrix scenarios = epg.generateScenarios(num_steps, num_scenarios);
 
-    vector<double> scenario_0 = scenarios[0];
-
-    for (const double price : scenario_0) {
-        cout << price << "\n";
-    }
     string filename = "scenarios.csv";
     save_as_csv(scenarios, filename);
 
